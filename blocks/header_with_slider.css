@@ -1,0 +1,79 @@
+.header_with_slider {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  background: #222;
+}
+
+.header_with_slider .title,
+.header_with_slider .subtitle {
+  position: relative;
+  width: 250px;
+  height: 30px;
+  color: transparent; /** представляет собой полностью прозрачный цвет. Это делает фон позади цветного элемента полностью видимым rgba (0,0,0,0) */
+  animation: fadeIn 2s 1.6s forwards;
+  /**
+  animation-name: fadeIn - эффект появления блока
+  animation-duration: 2s - продолжительность анимации
+  animation-delay: 1.6s - длительность задержки между началом анимации (когда анимация применяется к элементу через свойства) и когда она начинает выполняться
+  animation-direction:  forwards - состояние элемента после завершения анимации*/
+}
+.header_with_slider .title::before,
+.header_with_slider .subtitle::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: slideRight 2s cubic-bezier(0.75, 0, 0, 1) forwards;
+    /**
+  animation-name: slideRight - эффект появления блока
+  animation-duration: 2s - продолжительность анимации
+  animation-timing-function: cubic-bezier(0.75, 0, 0, 1) - функции Безье, Позволяет установить значения вручную
+  animation-direction:  forwards - состояние элемента после завершения анимации*/
+}
+.header_with_slider .title {
+  margin: 0;
+  font-family: Lora, serif;
+  font-size: 32px;
+  line-height: 30px;
+}
+.header_with_slider .title::before {
+  background: #FF4081;
+}
+.header_with_slider .subtitle {
+  margin: 10px 0 0 0;
+  font-family: Lato, sans-serif;
+  font-size: 12px;
+  line-height: 30px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  animation-delay: 3.2s;
+}
+.header_with_slider .subtitle::before {
+  background: #03A9F4;
+  animation-delay: 2s;
+}
+
+@keyframes fadeIn {
+  to {
+    color: white;
+  }
+}
+@keyframes slideRight {
+  50% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  50.1% {
+    transform-origin: right;
+  }
+  to {
+    transform-origin: right;
+  }
+}
