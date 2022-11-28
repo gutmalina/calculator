@@ -1,1 +1,25 @@
 @import url(../normalize.css);
+body{
+  font-size: 60px;
+}
+.result div{
+  width: 200px;
+  height: 100px;
+  border: 1px solid red;
+}
+.calculator__type_math{
+  width: 500px;
+
+}
+.btn-group{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.item{
+  background-color: aqua;
+  border-radius: 10%;
+  min-width: 100px;
+  min-height: 100px;
+
+}
