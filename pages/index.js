@@ -1,66 +1,66 @@
-
-let a = ''; //первое число
-let b = ''; //второе число
-let sign = ''; //знак математической операции
-let finish = false; // итог операции
-let see = ''
+const calculator = document.querySelector('.calculator__group');
+const result = document.querySelector('.result__calc');
+const clear = document.querySelector('.item__type_ac');
 
 
-const result = document.querySelector('.result__calc');// поле в котором будет выводиться итог
+let firstOperand = '';
+let secondOperand = '';
+let operator = '';
+let finish = false;
 
-// вернуть начальные значения всем переменным
 function clearAll(){
-  a = '';
-  b = '';
-  sign = '';
+  firstOperand = '';
+  secondOperand = '';
+  operator = '';
   finish = false;
   result.textContent = 0;
 }
 
-document.querySelector('.item__btn_ac').addEventListener('click', clearAll);
+clear.addEventListener('click', clearAll);
 
 function getData(event){
-  if(event.target.classList.contains('item__btn_number')){//выбираем только цифры
-    if(b === '' && sign === ''){
-      a += event.target.textContent
-      result.textContent = a
-    }else if(a !== "" && b !=='' && finish){
-      b = event.target.textContent
+  const operandBtn = event.target.classList.contains('item__type_number');
+  const operatorBtn = event.target.classList.contains('item__type_math');
+  const equalBtn = event.target.classList.contains('item__type_equal')
+  if(operandBtn){//нажат знак цифры
+    if(secondOperand === '' && operator === ''){//запись первой цифры
+      firstOperand += event.target.textContent
+      result.textContent = firstOperand
+    }else if(firstOperand !== "" && secondOperand !=='' && finish){//продолжение операции после нажатия знака равно
+      secondOperand = event.target.textContent
       finish = false
-      result.textContent = b
-    }else{
-      b += event.target.textContent
-      result.textContent = b
+      result.textContent = secondOperand
+    }else{// запись второй цифры и до нажатия знака равно
+      secondOperand += event.target.textContent
+      result.textContent = secondOperand
     }
-  }else if(event.target.classList.contains('item__btn_math')){
-    sign = event.target.textContent
-    result.textContent = sign
-  }else if(event.target.classList.contains('item__btn_equal')){
-    if(b === ''){
-      b = a
+  }else if(operatorBtn){// нажат знак математической операции
+    operator = event.target.textContent
+    result.textContent = operator
+  }else if(equalBtn){// нажат знак равно
+    if( secondOperand === ''){//если не указать вторую цифру
+       secondOperand = firstOperand
     }
-    switch(sign){
+    switch(operator){
       case '+':
-        a = (+a) + (+b)
+        firstOperand = (+firstOperand) + (+secondOperand)
         break;
       case '-':
-        a = (+a) - (+b)
+        firstOperand = (+firstOperand) - (+secondOperand)
         break;
       case '*':
-        a = (+a) * (+b)
+        firstOperand = (+firstOperand) * (+secondOperand)
         break;
       case '/':
-        a = (+a) / (+b)
+        firstOperand = (+firstOperand) / (+secondOperand)
         break;
     }
     finish = true;
-    result.textContent = a;
+    result.textContent = firstOperand;
   }else{
     return
   }
-  console.log( a, sign, b)
+  console.log( firstOperand, operator, secondOperand);
 }
 
-document.querySelector('.btn-group').addEventListener('click', getData)
-
-console.log(a)
+calculator.addEventListener('click', getData);
