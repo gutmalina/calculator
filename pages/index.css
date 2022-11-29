@@ -1,32 +1,64 @@
 @import url(../normalize.css);
-
+.page{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 0;
+}
 .calculator__type_math{
   background: #17171C;
   border-radius: 24px;
   padding: 30px 10px;
-  width: 350px;
-  font-family: 'Work Sans' sans-serif;
+  min-width: 310px;
+  font-family: 'Work Sans', sans-serif;
+}
+.calculator__bar{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+.calculator__toggle{
+  background: url(../images/Light=Off.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  width: 72px;
+  height: 32px;
+}
+.result{
+  margin-bottom: 15px;
+}
+.result__visual{
+  font-style: normal;
+  font-weight: 300;
+  font-size: 40px;
+  line-height: 47px;
+  text-align: right;
+  color: #FFFFFF;
+  opacity: 0.4;
+  margin-bottom: 5px;
 }
 .result__calc{
   font-style: normal;
   font-weight: 300;
-  font-size: 96px;
-  line-height: 96px;
+  font-size: 60px;
+  line-height: 100%;
   text-align: right;
   color: #FFFFFF;
 }
 .calculator__group{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
+  gap: 10px;
 }
 .item{
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 24px;
-  min-width: 72px;
-  min-height: 72px;
+  min-width: 70px;
+  min-height: 70px;
   font-style: normal;
   font-weight: 400;
   font-size: 32px;
