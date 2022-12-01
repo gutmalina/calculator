@@ -4,12 +4,25 @@ const clear = document.querySelector('.item__type_ac');
 const del = document.querySelector('.item__type_delete');
 const sign = document.querySelector('.item__type_toggle');
 const visual = document.querySelector('.result__visual');
+const mode = document.querySelector('.calculator__toggle');
+const theme = document.querySelector('#theme');
 
 let firstOperand = '';
 let secondOperand = '';
 let operator = '';
 let finish = false;
 
+/** Переключение темы */
+function changeTheme(){
+  const modeTheme = theme.getAttribute('href');
+  if(modeTheme === './pages/dark-mode.css'){
+    theme.setAttribute('href', './pages/light-mode.css')
+  }else{
+    theme.setAttribute('href', './pages/dark-mode.css')
+  }
+};
+
+/** очистить все значения  */
 function clearAll(){
   firstOperand = '';
   secondOperand = '';
@@ -19,40 +32,31 @@ function clearAll(){
   visual.textContent = 0;
 };
 
-clear.addEventListener('click', clearAll);
+/** что делать, если нажата кнопка ... */
+function handleButton(event){
+  const operandBtn = event.target.classList.contains('item__type_number');
+  const operatorBtn = event.target.classList.contains('item__type_math');
+  const equalBtn = event.target.classList.contains('item__type_equal');
+  const toggleBtn = event.target.classList.contains('item__type_toggle');
+  const deleteBtn = event.target.classList.contains('item__type_delete');
 
-function deleteLastNumber(){//доделать - тип данных не подходит
-  if(secondOperand === '' && operator === ''){
-    firstOperand = firstOperand.slice(0, firstOperand.length-1);
-    result.textContent = firstOperand;
-  }else if(firstOperand !== "" && secondOperand !=='' && finish){
+  if(operandBtn){
+    getOperand(event.target.textContent)
+  }else if(operatorBtn){
+    getOperator(event.target.textContent)
+  }else if(equalBtn){
+    getResult()
+  }else if(toggleBtn){
 
-
-  }else{
-    secondOperand = secondOperand.slice(0, secondOperand.length-1);
-    result.textContent = secondOperand
-  }
-
-};
-
-del.addEventListener('click', deleteLastNumber);
-
-function toggleSignOperator(){//доделать - тип данных не подходит
-  if(secondOperand === '' && operator === ''){
-    console.log(typeof firstOperand)
-    firstOperand = Math.abc(firstOperand);
-    result.textContent = firstOperand;
-  }else if(firstOperand !== '' && secondOperand !== '' && finish){
-
+  }else if(deleteBtn){
+    console.log(firstOperand, operator, secondOperand)
 
   }else{
-    secondOperand = secondOperand.slice(0, secondOperand.length-1);
-    result.textContent = secondOperand
+    return
   }
 }
 
-sign.addEventListener('click', toggleSignOperator);
-
+/** получить цифру */
 function getOperand(value){
   if(secondOperand === '' && operator === ''){//запись первой цифры
     firstOperand += value
@@ -70,12 +74,14 @@ function getOperand(value){
   }
 };
 
+/** получить знак операции */
 function getOperator(value){
   operator = value
   result.textContent = operator;
   visual.textContent = `${firstOperand} ${operator}`
 };
 
+/** получить результат операции */
 function getResult(){
   if( secondOperand === ''){//если не указать вторую цифру
     secondOperand = firstOperand
@@ -102,20 +108,7 @@ function getResult(){
   visual.textContent = firstOperand;
 };
 
-function getData(event){
-  const operandBtn = event.target.classList.contains('item__type_number');
-  const operatorBtn = event.target.classList.contains('item__type_math');
-  const equalBtn = event.target.classList.contains('item__type_equal');
-
-  if(operandBtn){//нажат знак цифры
-    getOperand(event.target.textContent)
-  }else if(operatorBtn){// нажат знак математической операции
-    getOperator(event.target.textContent)
-  }else if(equalBtn){// нажат знак равно
-    getResult()
-  }else{
-    return
-  }
-}
-
-calculator.addEventListener('click', getData);
+/** слушатели */
+mode.addEventListener('click', changeTheme);
+clear.addEventListener('click', clearAll);
+calculator.addEventListener('click', handleButton);
