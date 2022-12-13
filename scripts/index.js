@@ -9,6 +9,10 @@ let operator = ''
 let prevOperator = ''
 let result = 0;
 
+/** слушатели */
+mode.addEventListener('click', changeTheme);
+calculator.addEventListener('click', handleButton);
+
 /** Переключение темы */
 function changeTheme(){
   const modeTheme = theme.getAttribute('href');
@@ -19,11 +23,11 @@ function changeTheme(){
   }
 };
 
-
 /** что делать, если нажата кнопка ... */
 function handleButton(event){
-  if(event.target.classList.contains('item__type_number')){
-    operand += event.target.getAttribute('data-number')
+  const dataBtn = event.target.dataset
+  if(dataBtn.number){
+    operand += dataBtn.number
     if(!operator){
       result = parseFloat(operand)
       visual.textContent = result
@@ -32,10 +36,10 @@ function handleButton(event){
       visual.textContent = `${result} ${operator} ${operand}`
     }
 
-  }else if(event.target.classList.contains('item__type_math')){
-    const percent = event.target.getAttribute('data-percent')
+  }else if(dataBtn.operator){
+    const percent = dataBtn.percent
     if(!prevOperator){
-      operator = event.target.getAttribute('data-operator')
+      operator = dataBtn.operator
       operand = ''
       visual.textContent = `${result} ${operator}`
     }else if(percent && operator && operand){
@@ -48,7 +52,7 @@ function handleButton(event){
       operator = ''
       prevOperator = ''
     }else{
-      operator = event.target.getAttribute('data-operator')
+      operator = dataBtn.operator
       heandleResultOperation(prevOperator)
       operand = ''
       visual.textContent = `${result} ${operator}`
@@ -71,114 +75,45 @@ function handleButton(event){
     prevOperator = ''
 
   }else if(event.target.classList.contains('item__type_delete')){
+    if(result && operator && operand.length >0){
+      operand = operand.slice(0, -1)
+      visual.textContent = `${result} ${operator} ${operand}`
+    }else if(result && operator && !operand.length){
+      operator = ''
+      operand = 0
+      visual.textContent = result
+    }else if(result && !operator && !operand.length){
+      result = parseFloat(result.toString().slice(0, -1))
+      visual.textContent = result || 0
+      resultCalc.textContent = result || 0
+    }else{
+      operand = operand.slice(0, -1)
+      result = parseFloat(operand) || 0
+      visual.textContent = result
+    }
+
+  }else if(event.target.classList.contains('item__type_toggle')){
 
   }else{}
-  console.log('result', result)
-  console.log('operator', operator)
-  console.log('operand', operand)
-  console.log('prevOperator', prevOperator)
+
 }
 
 function heandleResultOperation(valueOperator){
   switch(valueOperator){
     case '+':
-      result += parseFloat(operand)
+      result = ((result*100) + (parseFloat(operand)*100))/100
       break;
     case '-':
-      result -= parseFloat(operand)
+      result = ((result*100) - (parseFloat(operand)*100))/100
       break;
     case '*':
-      result *= parseFloat(operand)
+      result = parseFloat((result * parseFloat(operand)).toPrecision(3))
       break;
     case '/':
-      result /= parseFloat(operand)
+      result = parseFloat((result / parseFloat(operand)).toPrecision(3))
       break;
   }
 }
 
 
-
-//   const operandBtn = event.target.classList.contains('item__type_number');
-//   const operatorBtn = event.target.classList.contains('item__type_math');
-//   const equalBtn = event.target.classList.contains('item__type_equal');
-//   const toggleBtn = event.target.classList.contains('item__type_toggle');
-//   const deleteBtn = event.target.classList.contains('item__type_delete');
-
-//   /** передать значение нажатой кнопки */
-//   if(operandBtn){
-//     getOperand(event.target.textContent);
-//   }else if(operatorBtn){
-//     getOperator(event.target.textContent)
-//   }else if(equalBtn){
-//     getResult()
-//   }else if(toggleBtn){
-
-//   }else if(deleteBtn){
-//     console.log(firstOperand, operator, secondOperand)
-
-//   }else{
-//     return
-//   }
-// }
-
-/** пприсвоить значения операндам */
-// function getOperand(value){
-
-//   /** нет ни одного значения */
-//   if(secondOperand === '' && operator === ''){
-//     firstOperand += value
-//     result.textContent = firstOperand
-//     visual.textContent = firstOperand
-//   }else if(firstOperand !== '' && secondOperand !== '' && operator !== ''){
-//     console.log('yes')
-//   }else if(firstOperand !== '' && secondOperand !== '' && finish){//продолжение операции после нажатия знака равно
-//     secondOperand = value
-//     finish = false
-//     result.textContent = secondOperand
-//     visual.textContent = `${firstOperand} ${operator} ${secondOperand}`
-//   }else{// запись второй цифры и до нажатия знака равно
-//     secondOperand += value
-//     result.textContent = secondOperand
-//     visual.textContent = `${firstOperand} ${operator} ${secondOperand}`
-//   }
-// };
-
-// /** получить знак операции */
-// function getOperator(value){
-//   operator = value
-//   result.textContent = operator;
-//   visual.textContent = `${firstOperand} ${operator}`
-// };
-
-// /** получить результат операции */
-// function getResult(){
-//   if( secondOperand === ''){//если не указать вторую цифру
-//     secondOperand = firstOperand
-//  }
-//  switch(operator){
-//     case '+':
-//       firstOperand = (+firstOperand) + (+secondOperand)
-//       break;
-//     case '-':
-//       firstOperand = (+firstOperand) - (+secondOperand)
-//       break;
-//     case 'x':
-//       firstOperand = (+firstOperand) * (+secondOperand)
-//       break;
-//     case '/':
-//       firstOperand = (+firstOperand) / (+secondOperand)
-//       break;
-//     case '%':
-//       firstOperand = (+firstOperand) / 100 * (+secondOperand)
-//       break;
-//   }
-//   finish = true;
-//   result.textContent = firstOperand;
-//   visual.textContent = firstOperand;
-// };
-
-/** слушатели */
-mode.addEventListener('click', changeTheme);
-// clear.addEventListener('click', clearAll);
-calculator.addEventListener('click', handleButton);
 
